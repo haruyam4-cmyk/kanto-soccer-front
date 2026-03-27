@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:8000/api/v1";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const SEASON = 2026;
 const JUFA_YT = "https://www.youtube.com/c/JUFA_Kanto";
 const SEASON_START = new Date("2026-04-04");
@@ -172,17 +173,17 @@ export default function Home() {
   const isPreSeason = new Date() < SEASON_START;
 
   useEffect(() => {
-    fetch(`${API}/standings?season=${SEASON}&division=1`)
+    fetch(`${SUPABASE_URL}/rest/v1/standings?season=eq.${SEASON}&division=eq.1&order=rank.asc`, {headers:{"apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`}})
       .then(r => r.json())
-      .then(d => { if (d.standings?.length > 0) setStandings(d.standings); })
+      .then(d => { if (Array.isArray(d) && d.length > 0) setStandings(d); })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
-    fetch(`${API}/matches?season=${SEASON}&division=1&section=${section}`)
+    fetch(`${SUPABASE_URL}/rest/v1/matches?season=eq.${SEASON}&division=eq.1&section=eq.${section}&order=match_date.asc,kickoff.asc`, {headers:{"apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`}})
       .then(r => r.json())
-      .then(d => { if (d.matches) setMatches(d.matches); })
+      .then(d => { if (Array.isArray(d)) setMatches(d); })
       .catch(() => {});
   }, [section]);
 
