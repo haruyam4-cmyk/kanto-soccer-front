@@ -271,7 +271,7 @@ export default function Home() {
                 {dayMatches.map((m, i) => {
                   const isLive     = m.status === "live";
                   const isUpcoming = m.status === "upcoming";
-                  const score = m.score_home !== null ? `${m.score_home}  -  ${m.score_away}` : "vs";
+                  const score = m.score_home !== null ? `${m.score_home}  -  ${m.score_away}` : "対";
                   const time  = formatTime(m.kickoff);
                   return (
                     <div key={i} style={{ background:C.white, border: isLive ? `1.5px solid ${C.sky}` : `1px solid ${C.border}`, borderRadius:14, padding:"12px 16px", marginBottom:8, boxShadow: isLive ? `0 0 0 3px ${C.skyLight}` : "0 1px 3px rgba(0,0,0,0.05)" }}>
